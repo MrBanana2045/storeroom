@@ -1,1 +1,1 @@
-{{$node["Function"].json["content"]}}
+fileContent
