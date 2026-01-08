@@ -1,0 +1,37 @@
+name: Update File Every Minute
+
+on:
+  schedule:
+    - cron: '* * * * *'
+  workflow_dispatch:
+jobs:
+  update-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read current number
+        id: read_number
+        run: |
+          if [ -f "file.txt" ]; then
+            current_number=$(cat file.txt)
+          else
+            current_number=0
+          fi
+          echo "current_number=$current_number" >> $GITHUB_OUTPUT
+
+      - name: Increment number
+        id: increment_number
+        run: |
+          new_number=$(( ${{ steps.read_number.outputs.current_number }} + 1 ))
+          echo "$new_number" > file.txt
+          echo "new_number=$new_number" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add file.txt
+          git commit -m "Increment number to ${{ steps.increment_number.outputs.new_number }}"
+          git push
