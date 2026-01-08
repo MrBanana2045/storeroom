@@ -2,7 +2,7 @@ name: Update File Every Minute
 
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '*/1 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.MY_PAS }}
+          token: ${{ secrets.MY_PAT }}
 
       - name: Read current number
         id: read_number
@@ -37,4 +37,4 @@ jobs:
           git config --global user.email "actions@github.com"
           git add file.txt
           git commit -m "Increment number to ${{ steps.increment_number.outputs.new_number }}"
-          git push https://${{ secrets.MY_PAS }}@github.com/MrBanana2045/storeroom.git
+          git push https://${{ secrets.MY_PAT }}@github.com/MrBanana2045/storeroom.git
