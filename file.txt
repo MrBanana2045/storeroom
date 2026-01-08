@@ -1,1 +1,1 @@
-hi
+{{$node["Function"].json["newNumber"]}}
